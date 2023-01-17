@@ -7,7 +7,7 @@ library(mgcv)
 # flying negatively correlated with wind speed
 
 func_fire <- function(temp){
-  probs <- c(0, 0, 0, 0.05, 0.15, 0.4, 0.95, 1, 1, 1, 1)
+  probs <- c(0, 0, 0.05, 0.15, 0.4, 0.95, 1, 1, 1, 1, 1)
   preds <- c(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50)
   
   mod <- gam(probs ~ s(preds))

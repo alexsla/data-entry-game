@@ -8,19 +8,20 @@ source("R/sampling_functions.R")
 localities <- read_csv("data/localities.csv")
 pokemon <- read_csv("data/pokemon.csv") %>%
   select(name, pokedex_number, generation, type1, type2, is_legendary, percentage_male, height_m, weight_kg, hp, attack, defense, speed, sp_attack, sp_defense, base_total) %>%
-  mutate(name = case_when(name == "Mr. Mime" ~ "Mr Mime",
-                          name == "Mime Jr." ~ "Mime Jr",
-                          name == "Nidoran♀" ~ "Nidoran F",
-                          name == "Nidoran♂" ~ "Nidoran M",
-                          name == "Type: Null" ~ "Type Null",
-                          T ~ name),
-         generation = case_when(generation == 1 ~ "I",
-                                generation == 2 ~ "II",
-                                generation == 3 ~ "III",
-                                generation == 4 ~ "IV",
-                                generation == 5 ~ "V",
-                                generation == 6 ~ "VI",
-                                generation == 7 ~ "VII"))
+  mutate(
+    # name = case_when(name == "Mr. Mime" ~ "Mr Mime",
+    #                  name == "Mime Jr." ~ "Mime Jr",
+    #                  name == "Nidoran♀" ~ "Nidoran F",
+    #                  name == "Nidoran♂" ~ "Nidoran M",
+    #                  name == "Type: Null" ~ "Type Null",
+    #                  T ~ name),
+    generation = case_when(generation == 1 ~ "I",
+                           generation == 2 ~ "II",
+                           generation == 3 ~ "III",
+                           generation == 4 ~ "IV",
+                           generation == 5 ~ "V",
+                           generation == 6 ~ "VI",
+                           generation == 7 ~ "VII"))
 
 # Define the UI for the app
 ui <- fluidPage(
@@ -35,6 +36,9 @@ server <- function(input, output, session) {
   # Create the map
   output$map <- renderLeaflet({
     leaflet() %>%
+      setView(lat = -27.3,
+              lng = 133.1, 
+              zoom = 3) %>%
       addTiles() %>%
       addMarkers(data = localities, 
                  lat = ~latitude, 
@@ -250,7 +254,7 @@ server <- function(input, output, session) {
                         paste("Sp. Defense:", sampled_pokemon[6,]$sp_defense),
                         br(),
                         paste("Speed:", sampled_pokemon[6,]$speed))
-                 )
+        )
       )
     })
     
